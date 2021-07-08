@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Form, Button, Container, Row, Alert } from "react-bootstrap";
 import firebase from "firebase/app";
 
 export default function Login() {
+  const emailRef = useRef();
+  const passwordRef = useRef();
   const [{ email, password }, setUserData] = useState({
     email: "",
     password: "",
@@ -18,7 +20,10 @@ export default function Login() {
       e.preventDefault();
       const authHandler = await firebase
         .auth()
-        .signInWithEmailAndPassword(email, password);
+        .signInWithEmailAndPassword(
+          emailRef.current.value,
+          passwordRef.current.value
+        );
       if (authHandler && authHandler.user !== null) {
         console.log("SUCCESS");
       }
@@ -44,6 +49,7 @@ export default function Login() {
           <Form.Label>כתובת אימייל</Form.Label>
           <Form.Control
             type="email"
+            ref={emailRef}
             placeholder="הזן כתובת אימייל"
             value={email}
             onInput={(e) => handleInput(e, "email")}
@@ -53,6 +59,7 @@ export default function Login() {
           <Form.Label>סיסמא</Form.Label>
           <Form.Control
             type="password"
+            ref={passwordRef}
             placeholder="הזן סיסמא"
             value={password}
             onInput={(e) => handleInput(e, "password")}
