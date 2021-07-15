@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
-import { Form, Button, Container, Row, Alert } from "react-bootstrap";
+import { Form, Button, Container,  Alert } from "react-bootstrap";
 import firebase from "firebase/app";
+import { useHistory } from "react-router-dom";
 
 export default function Login() {
+  const history = useHistory()
   const emailRef = useRef();
   const passwordRef = useRef();
   const [{ email, password }, setUserData] = useState({
@@ -12,7 +14,9 @@ export default function Login() {
   const [alert, setAlert] = useState("");
 
   const handleInput = (e, input) => {
-    setUserData({ [input]: e.target.value || "" });
+    setUserData(
+      Object.assign({ email, password }, { [input]: e.target.value || "" })
+    );
   };
 
   const handleLogin = async (e) => {
@@ -25,7 +29,8 @@ export default function Login() {
           passwordRef.current.value
         );
       if (authHandler && authHandler.user !== null) {
-        console.log("SUCCESS");
+        console.log("SUCCESS => uid ",authHandler.user.uid);
+        history.replace("/")
       }
     } catch (err) {
       console.error(err);

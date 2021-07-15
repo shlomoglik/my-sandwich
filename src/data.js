@@ -1,4 +1,4 @@
-export const sandwichData = [
+export let sandwichData = [
   { id: "1", title: "טונה עם מיונז", img: "tuna.jpg" },
   { id: "2", title: "סלט ביצים", img: "eggs.jpg" },
   { id: "3", title: "חומוס", img: "tuna.jpg" },
