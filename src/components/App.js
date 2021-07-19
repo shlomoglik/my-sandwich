@@ -7,7 +7,9 @@ import PrivateRoute from "./PrivateRoute";
 import Login from "../pages/Login";
 import Heading from "./Heading";
 import { AuthProvider } from "../context/AuthContext";
-import { FOODS, ADD_FOOD, LOGIN } from "../constants/routes";
+import { FOODS, ADD_FOOD, LOGIN, ADMIN } from "../constants/routes";
+import { FoodProvider } from "../context/FoodsContext";
+// import Admin from "../pages/Admin";
 
 export default function App() {
   const containerStyle = {
@@ -17,19 +19,22 @@ export default function App() {
     backgroundColor: "#f8f8f8f8",
   };
   return (
-    <Container fluid style={containerStyle}>
-      <BrowserRouter>
-        <AuthProvider>
-          <Row style={rowBodyStyle}>
-            <Heading />
-            <Switch>
-              <Route path={LOGIN} exact component={Login} />
-              <PrivateRoute path={FOODS} exact component={AllFoods} />
-              <PrivateRoute path={ADD_FOOD} exact component={AddFood} />
-            </Switch>
-          </Row>
-        </AuthProvider>
-      </BrowserRouter>
-    </Container>
+    <AuthProvider>
+      <FoodProvider>
+        <Container fluid style={containerStyle}>
+          <BrowserRouter>
+            <Row style={rowBodyStyle}>
+              <Heading />
+              <Switch>
+                <Route path={LOGIN} exact component={Login} />
+                <PrivateRoute path={FOODS} exact component={AllFoods} />
+                <PrivateRoute path={ADD_FOOD} exact component={AddFood} />
+                {/* <PrivateRoute path={ADMIN} exact component={Admin} /> */}
+              </Switch>
+            </Row>
+          </BrowserRouter>
+        </Container>
+      </FoodProvider>
+    </AuthProvider>
   );
 }

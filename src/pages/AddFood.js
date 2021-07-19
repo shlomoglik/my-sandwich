@@ -1,13 +1,16 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Alert, Form, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { sandwichData } from "../data";
+import FoodContext from "../context/FoodsContext";
+// import { sandwichData } from "../data";
 
 export default function AddFood() {
   const initialFormData = {
     title: "",
     img: "",
   };
+
+  const foodsCtx = useContext(FoodContext);
 
   const history = useHistory();
   const [alert, setAlert] = useState("");
@@ -16,27 +19,26 @@ export default function AddFood() {
   const imgRef = useRef();
 
   const clearForm = () => setFormData(initialFormData);
+  
+  const handleInput = (e, input) => {
+    setFormData({ ...formData, [input]: e.target.value || "" });
+  };
   const handleAddFood = async (e) => {
     try {
       e.preventDefault();
-      await Promise.resolve(
-        setTimeout(() => {
-          const lastID = sandwichData.reduce((acc, curr) => Math.max(acc, curr.lastID),1);
-          sandwichData.push({ ...formData, id: lastID + 1 });
-        }, 1500)
+      const lastID = foodsCtx.foods.reduce(
+        (acc, curr) => Math.max(acc, curr.lastID),
+        0
       );
+      await foodsCtx.add({ ...formData, id: lastID + 1 });
       clearForm();
-      history.replace("/");
+      history.push("/");
     } catch (err) {
       console.error(err);
       setAlert(err);
     }
   };
-
-  const handleInput = (e, input) => {
-    setFormData({ ...formData, [input]: e.target.value || "" });
-  };
-
+  
   return (
     <Form onSubmit={handleAddFood}>
       <h3>הוסף מאכל חדש</h3>
@@ -44,7 +46,7 @@ export default function AddFood() {
         <Form.Label>מאכל</Form.Label>
         <Form.Control
           required
-          type="title"
+          type="text"
           ref={titleRef}
           placeholder="דוגמא: פיתה עם מלפפון"
           value={formData.title}
@@ -55,7 +57,7 @@ export default function AddFood() {
         <Form.Label>קישור לתמונת נושא</Form.Label>
         <Form.Control
           required
-          type="img"
+          type="text"
           ref={imgRef}
           placeholder="photoURL.jgp"
           value={formData.img}
