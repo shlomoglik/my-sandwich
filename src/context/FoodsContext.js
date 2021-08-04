@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
 
 const FoodContext = React.createContext({
+  loading: true,
   foods: [],
   remove: async (id) => {},
   add: async (data) => {},
@@ -16,7 +17,7 @@ export function FoodProvider({ children }) {
   }
 
   function removeFood(id) {
-    return db.doc(`foods/${id}`).delete()
+    return db.doc(`foods/${id}`).delete();
   }
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export function FoodProvider({ children }) {
   }, []);
 
   const value = {
+    loading,
     foods,
     add: addFood,
     remove: removeFood,
