@@ -26,11 +26,7 @@ export default function AddFood() {
   const handleAddFood = async (e) => {
     try {
       e.preventDefault();
-      const lastID = foodsCtx.foods.reduce(
-        (acc, curr) => Math.max(acc, curr.lastID),
-        0
-      );
-      await foodsCtx.add({ ...formData, id: lastID + 1 });
+      await foodsCtx.add({ ...formData});
       clearForm();
       history.push("/");
     } catch (err) {

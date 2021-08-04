@@ -8,12 +8,13 @@ export default function Sandwich(props) {
   const FoodsCtx = useContext(FoodContext);
 
   const handleClose = () => setShowModal(false);
-  const handleShowModal = (modalID) => {
+  const handleShowModal = () => {
     setShowModal({
       title: props.title,
       body: "האם להוסיף לקופסת האוכל ?",
     });
   };
+
   const promptRemove = () => {
     const handleRemove = async () => {
       await FoodsCtx.remove(props.id);
@@ -37,7 +38,7 @@ export default function Sandwich(props) {
           <Card.Title>{props.title}</Card.Title>
           <Card.Text>{props.description || "---"}</Card.Text>
         </Card.Body>
-        <Card.Footer class="d-flex gap-1 p-1">
+        <Card.Footer className="d-flex gap-1 p-1">
           <Button variant="primary" onClick={handleShowModal}>
             הוסף לקופסא
           </Button>
